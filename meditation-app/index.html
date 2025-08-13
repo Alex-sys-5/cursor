@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0f14" />
+    <title>Медитация</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2323c1a1'/%3E%3Ctext x='32' y='41' text-anchor='middle' font-size='36' fill='white'%3E%F0%9F%8C%8A%3C/text%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <noscript>Для работы приложения нужен JavaScript.</noscript>
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">🧘‍♀️</div>
+        <div class="titles">
+          <h1>Медитация</h1>
+          <p class="subtitle">спокойствие и фокус</p>
+        </div>
+      </div>
+      <button id="themeToggle" class="icon-button" aria-label="Переключить тему" title="Тема">🌙</button>
+    </header>
+
+    <nav class="tabs" role="tablist" aria-label="Разделы">
+      <button class="tab active" data-target="timer" role="tab" aria-selected="true">Таймер</button>
+      <button class="tab" data-target="breath" role="tab">Дыхание</button>
+      <button class="tab" data-target="sounds" role="tab">Звуки</button>
+      <button class="tab" data-target="stats" role="tab">Статистика</button>
+      <button class="tab" data-target="settings" role="tab">Настройки</button>
+    </nav>
+
+    <main>
+      <section id="timer" class="view active" aria-labelledby="Таймер">
+        <div class="card">
+          <h2>Таймер медитации</h2>
+          <div class="timer-controls">
+            <div class="presets">
+              <button class="chip preset" data-min="5">5 мин</button>
+              <button class="chip preset" data-min="10">10 мин</button>
+              <button class="chip preset" data-min="15">15 мин</button>
+              <button class="chip preset" data-min="30">30 мин</button>
+            </div>
+            <label class="inline-input">
+              <span>Своя длительность</span>
+              <input id="customMinutes" type="number" min="1" max="120" step="1" value="10" />
+              <span>мин</span>
+            </label>
+          </div>
+
+          <div class="timer-visual">
+            <svg viewBox="0 0 120 120" class="progress-ring" aria-hidden="true">
+              <circle class="ring-bg" cx="60" cy="60" r="54" />
+              <circle class="ring" cx="60" cy="60" r="54" />
+            </svg>
+            <div class="time-readout">
+              <div id="timeDisplay" class="time">10:00</div>
+              <div id="timerStatus" class="status">Готово</div>
+            </div>
+          </div>
+
+          <div class="buttons">
+            <button id="startTimer" class="btn primary">Старт</button>
+            <button id="pauseTimer" class="btn" disabled>Пауза</button>
+            <button id="resetTimer" class="btn" disabled>Сброс</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="breath" class="view" aria-labelledby="Дыхание">
+        <div class="card">
+          <h2>Дыхательные техники</h2>
+          <div class="grid two">
+            <label>
+              <span>Техника</span>
+              <select id="technique">
+                <option value="box">Бокс (4-4-4-4)</option>
+                <option value="478">4‑7‑8</option>
+                <option value="coherence">Коэрентное (5‑5)</option>
+              </select>
+            </label>
+            <label>
+              <span>Длительность сессии (мин)</span>
+              <input id="breathMinutes" type="number" min="1" max="60" step="1" value="5" />
+            </label>
+          </div>
+
+          <div class="breath-visual" aria-live="polite">
+            <div class="breath-circle" id="breathCircle"></div>
+            <div class="breath-cue" id="breathCue">Готово</div>
+          </div>
+
+          <div class="buttons">
+            <button id="startBreath" class="btn primary">Старт</button>
+            <button id="pauseBreath" class="btn" disabled>Пауза</button>
+            <button id="resetBreath" class="btn" disabled>Сброс</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="sounds" class="view" aria-labelledby="Звуки">
+        <div class="card">
+          <h2>Амбиент‑звуки</h2>
+          <p class="muted">Звуки генерируются в браузере и работают офлайн. Громкость сохраняется.</p>
+
+          <div class="sound-list">
+            <div class="sound-row">
+              <div class="sound-meta">
+                <span class="sound-name">Дождь</span>
+                <label class="switch">
+                  <input type="checkbox" id="rainToggle" />
+                  <span></span>
+                </label>
+              </div>
+              <input id="rainVolume" type="range" min="0" max="1" step="0.01" value="0.4" />
+            </div>
+
+            <div class="sound-row">
+              <div class="sound-meta">
+                <span class="sound-name">Лес</span>
+                <label class="switch">
+                  <input type="checkbox" id="forestToggle" />
+                  <span></span>
+                </label>
+              </div>
+              <input id="forestVolume" type="range" min="0" max="1" step="0.01" value="0.3" />
+            </div>
+
+            <div class="sound-row">
+              <div class="sound-meta">
+                <span class="sound-name">Поток</span>
+                <label class="switch">
+                  <input type="checkbox" id="streamToggle" />
+                  <span></span>
+                </label>
+              </div>
+              <input id="streamVolume" type="range" min="0" max="1" step="0.01" value="0.35" />
+            </div>
+
+            <div class="sound-row">
+              <div class="sound-meta">
+                <span class="sound-name">Ом</span>
+                <label class="switch">
+                  <input type="checkbox" id="omToggle" />
+                  <span></span>
+                </label>
+              </div>
+              <input id="omVolume" type="range" min="0" max="1" step="0.01" value="0.2" />
+            </div>
+          </div>
+
+          <label class="inline-input">
+            <span>Общая громкость</span>
+            <input id="masterVolume" type="range" min="0" max="1" step="0.01" value="1" />
+          </label>
+        </div>
+      </section>
+
+      <section id="stats" class="view" aria-labelledby="Статистика">
+        <div class="card">
+          <h2>Статистика</h2>
+          <div class="stats">
+            <div class="stat">
+              <div class="stat-value" id="statSessions">0</div>
+              <div class="stat-label">Сессий</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value" id="statMinutes">0</div>
+              <div class="stat-label">Минут всего</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value" id="statStreak">0</div>
+              <div class="stat-label">Дней подряд</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="settings" class="view" aria-labelledby="Настройки">
+        <div class="card">
+          <h2>Настройки</h2>
+          <div class="grid two">
+            <div>
+              <div class="muted">Тема</div>
+              <button id="themeToggle2" class="btn">Светлая / Тёмная</button>
+            </div>
+            <div>
+              <div class="muted">Установка</div>
+              <button id="installBtn" class="btn" disabled>Установить приложение</button>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <button id="resetStats" class="btn danger">Сбросить статистику</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <span>Работает офлайн • PWA</span>
+    </footer>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
