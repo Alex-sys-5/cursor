@@ -122,7 +122,6 @@ api.delete('/sessions/:id', async (req, res, next) => {
 
 app.use('/api', api);
 app.get('/openapi.json', (req, res) => res.json(openapi));
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapi, { explorer: true }));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapi, { explorer: true }));
 
 // Manifest with proper content-type
