@@ -198,7 +198,9 @@ class BreathingSession {
   start() {
     if (this.state === 'running') return;
     this.state = 'running';
-    this._remaining = this._remaining || this.minutes * 60;
+    this._remaining = this.minutes * 60;
+    this._phaseIndex = 0;
+    this._phaseRemaining = this._currentPattern()[0];
     this._lastTs = performance.now();
     const step = () => {
       if (this.state !== 'running') return;
@@ -207,9 +209,12 @@ class BreathingSession {
       this._lastTs = now;
       this._remaining = Math.max(0, this._remaining - delta);
 
+      // update current phase, carry overshoot to next phases to avoid stalling
       this._phaseRemaining -= delta;
-      if (this._phaseRemaining <= 0) {
+      while (this._phaseRemaining <= 0) {
+        const overshoot = -this._phaseRemaining;
         this._advancePhase();
+        this._phaseRemaining -= overshoot;
       }
 
       this._animateByPhase();
@@ -252,6 +257,7 @@ class BreathingSession {
     const pattern = this._currentPattern();
     this._phaseIndex = (this._phaseIndex + 1) % pattern.length;
     this._phaseRemaining = pattern[this._phaseIndex];
+    this._setCue(Techniques[this.techniqueKey].labels[this._phaseIndex] + ' · ' + Math.ceil(this._phaseRemaining) + 'с');
     SoundsEngine.tick();
   }
 
@@ -260,7 +266,8 @@ class BreathingSession {
     const pattern = this._currentPattern();
     const phase = this._phaseIndex % pattern.length;
     const label = labels[phase] || '';
-    this._setCue(`${label} · ${Math.ceil(this._phaseRemaining)}с`);
+    const secondsLeft = Math.max(0, Math.ceil(this._phaseRemaining));
+    this._setCue(`${label} · ${secondsLeft}с`);
 
     if (label.startsWith('Вдох')) {
       this._applyScale(1.15);
