@@ -514,6 +514,9 @@ const UI = {
       btn.addEventListener('click', () => UI.switchTab(btn.dataset.target));
     });
 
+    const brand = document.querySelector('.brand');
+    if (brand) { brand.addEventListener('click', () => UI.switchTab('timer')); }
+
     // Theme
     $('#themeToggle').addEventListener('click', Theme.toggle);
     $('#themeToggle2').addEventListener('click', Theme.toggle);
