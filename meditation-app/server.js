@@ -7,6 +7,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const { ensureDB, readDB, queueWrite } = require('./lib/store');
 const pkg = require('./package.json');
+const swaggerUi = require('swagger-ui-express');
+const openapi = require('./openapi.json');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -119,6 +121,8 @@ api.delete('/sessions/:id', async (req, res, next) => {
 });
 
 app.use('/api', api);
+app.get('/openapi.json', (req, res) => res.json(openapi));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapi, { explorer: true }));
 
 // Manifest with proper content-type
 app.get('/manifest.webmanifest', (req, res) => {
