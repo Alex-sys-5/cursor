@@ -136,7 +136,7 @@ class MeditationTimer {
     this.updateRing(0);
     this.statusEl.textContent = 'Готово';
     SoundsEngine.beep();
-    Stats.recordSession(Math.round(this.durationSeconds / 60));
+    Stats.recordSession(Math.round(this.durationSeconds / 60), 'timer');
   }
 
   updateTimeUI() {
@@ -245,7 +245,7 @@ class BreathingSession {
     this._applyScale(1);
     this._setCue('Готово');
     SoundsEngine.beep();
-    Stats.recordSession(this.minutes);
+    Stats.recordSession(this.minutes, 'breath');
   }
 
   _advancePhase() {
@@ -463,24 +463,39 @@ class SoundsEngineClass {
 
 const SoundsEngine = new SoundsEngineClass();
 
-// Statistics
+// Statistics via REST with offline fallback
 const Stats = {
-  load() { return storage.get('meditationStats', { totalSessions: 0, totalMinutes: 0, lastSessionDate: null, streakDays: 0 }); },
-  save(stats) { storage.set('meditationStats', stats); },
-  recordSession(minutes) {
-    const s = this.load();
-    s.totalSessions += 1;
-    s.totalMinutes += Math.max(0, Number(minutes) || 0);
-    if (s.lastSessionDate === todayStr()) {
-      // streak unchanged
-    } else if (isYesterday(s.lastSessionDate)) {
-      s.streakDays += 1;
-    } else {
-      s.streakDays = 1;
+  async fetchStats() {
+    try {
+      const res = await fetch('/api/stats');
+      if (!res.ok) throw new Error('bad status');
+      const data = await res.json();
+      storage.set('meditationStats', data);
+      return data;
+    } catch {
+      return storage.get('meditationStats', { totalSessions: 0, totalMinutes: 0, lastSessionDate: null, streakDays: 0 });
     }
-    s.lastSessionDate = todayStr();
-    this.save(s);
-    UI.updateStats(s);
+  },
+  async recordSession(minutes, kind) {
+    const m = Math.max(0, Math.round(Number(minutes) || 0));
+    try {
+      await fetch('/api/sessions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ minutes: m, kind }) });
+    } catch {
+      const s = storage.get('meditationStats', { totalSessions: 0, totalMinutes: 0, lastSessionDate: null, streakDays: 0 });
+      s.totalSessions += 1;
+      s.totalMinutes += m;
+      if (s.lastSessionDate === todayStr()) {
+      } else if (isYesterday(s.lastSessionDate)) {
+        s.streakDays += 1;
+      } else {
+        s.streakDays = 1;
+      }
+      s.lastSessionDate = todayStr();
+      storage.set('meditationStats', s);
+    } finally {
+      const latest = await this.fetchStats();
+      UI.updateStats(latest);
+    }
   }
 };
 
@@ -548,12 +563,11 @@ const UI = {
         }[key];
         fn(e.target.checked);
       });
-      // Apply initial state if toggled on
       if (on) toggle.dispatchEvent(new Event('change'));
     });
 
     // Stats initial
-    UI.updateStats(Stats.load());
+    Stats.fetchStats().then(UI.updateStats);
 
     // PWA install
     this._installPrompt = null;
