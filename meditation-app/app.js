@@ -135,7 +135,7 @@ class MeditationTimer {
     this.updateTimeUI();
     this.updateRing(0);
     this.statusEl.textContent = 'Готово';
-    SoundsEngine.beep();
+    SoundsEngineClass.beep();
     Stats.recordSession(Math.round(this.durationSeconds / 60), 'timer');
   }
 
@@ -249,7 +249,7 @@ class BreathingSession {
     this.state = 'idle';
     this._applyScale(1);
     this._setCue('Готово');
-    SoundsEngine.beep();
+    SoundsEngineClass.beep();
     Stats.recordSession(this.minutes, 'breath');
   }
 
@@ -258,7 +258,7 @@ class BreathingSession {
     this._phaseIndex = (this._phaseIndex + 1) % pattern.length;
     this._phaseRemaining = pattern[this._phaseIndex];
     this._setCue(Techniques[this.techniqueKey].labels[this._phaseIndex] + ' · ' + Math.ceil(this._phaseRemaining) + 'с');
-    SoundsEngine.tick();
+    SoundsEngineClass.tick();
   }
 
   _animateByPhase() {
