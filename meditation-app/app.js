@@ -630,43 +630,74 @@ const UI = {
   },
 
   _initMeditations() {
-    const titles = {
-      career: { title: 'Карьера', desc: 'Фокус, продуктивность и уверенность в профессиональном росте.' },
-      money: { title: 'Деньги', desc: 'Отношение к достатку, изобилию и финансовой осознанности.' },
-      relax: { title: 'Расслабление', desc: 'Снятие напряжения, отпускание забот и восстановление.' },
-      love: { title: 'Любовь', desc: 'Открытость сердцу, доброта и принятие.' },
-      energy: { title: 'Заряд энергии', desc: 'Бодрость, ясность и мягкая мотивация на день.' },
-      sex: { title: 'Секс', desc: 'Чувственность, присутствие и доверие к себе.' }
+    const categories = {
+      career: {
+        title: 'Карьера',
+        tracks: [
+          {
+            id: 'career-1',
+            title: 'Карьера — атмосфера фокуса (Dzen видео)',
+            source: 'https://dzen.ru/video/watch/63bcd3bb3fd9f977910d3056',
+            tip: 'Если аудио не воспроизводится, откройте источник в новой вкладке.'
+          }
+        ]
+      },
+      money: { title: 'Деньги', tracks: [] },
+      relax: { title: 'Расслабление', tracks: [] },
+      love: { title: 'Любовь', tracks: [] },
+      energy: { title: 'Заряд энергии', tracks: [] },
+      sex: { title: 'Секс', tracks: [] }
     };
-    const detail = document.getElementById('meditationDetail');
-    const titleEl = document.getElementById('meditationTitle');
-    const descEl = document.getElementById('meditationDesc');
+
+    const tracksWrap = document.getElementById('meditationTracks');
+    const categoryTitle = document.getElementById('medCategoryTitle');
+    const list = document.getElementById('tracksList');
+
+    const renderTracks = (key) => {
+      const cat = categories[key];
+      if (!cat) return;
+      categoryTitle.textContent = cat.title;
+      list.innerHTML = '';
+      cat.tracks.forEach(t => {
+        const row = document.createElement('div');
+        row.className = 'track-row';
+        const btn = document.createElement('button');
+        btn.className = 'btn play-btn';
+        btn.textContent = '▶';
+        const meta = document.createElement('div'); meta.className = 'track-meta';
+        const title = document.createElement('div'); title.className = 'track-title'; title.textContent = t.title;
+        const hint = document.createElement('div'); hint.className = 'muted small'; hint.textContent = t.tip || '';
+        meta.appendChild(title); meta.appendChild(hint);
+        const open = document.createElement('a'); open.className = 'btn'; open.target = '_blank'; open.rel = 'noopener noreferrer'; open.href = t.source; open.textContent = 'Источник';
+
+        // audio element (may be blocked by CORS; we keep fallback link)
+        const audio = document.createElement('audio');
+        audio.preload = 'none';
+        audio.controls = false;
+        audio.crossOrigin = 'anonymous';
+        // Try to extract direct .m3u8/mp4 is not trivial; keep source as-is. Many platforms block direct streaming.
+
+        let playing = false;
+        btn.addEventListener('click', () => {
+          // Attempt to play via window.open if direct playback blocked
+          if (!playing) {
+            window.open(t.source, '_blank', 'noopener');
+          }
+        });
+
+        row.appendChild(btn); row.appendChild(meta); row.appendChild(open);
+        list.appendChild(row);
+      });
+      tracksWrap.classList.remove('hidden');
+    };
 
     $$('.meditation-tile').forEach(tile => {
       tile.addEventListener('click', () => {
         const key = tile.dataset.key;
-        const meta = titles[key];
-        if (!meta) return;
-        titleEl.textContent = meta.title;
-        descEl.textContent = meta.desc;
-        detail.classList.remove('hidden');
+        renderTracks(key);
         UI.switchTab('meditations');
       });
     });
-
-    const startFor = (min) => {
-      return () => {
-        $('#customMinutes').value = String(min);
-        UI.timer.setDurationMinutes(min);
-        UI.switchTab('timer');
-        UI.timer.start();
-        UI._updateTimerButtons(true);
-      };
-    };
-
-    document.getElementById('medStart5').addEventListener('click', startFor(5));
-    document.getElementById('medStart10').addEventListener('click', startFor(10));
-    document.getElementById('medStart15').addEventListener('click', startFor(15));
   },
 
   _updateTimerButtons(isRunning) {
