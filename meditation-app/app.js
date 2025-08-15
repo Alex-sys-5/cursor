@@ -668,25 +668,32 @@ const UI = {
         const title = document.createElement('div'); title.className = 'track-title'; title.textContent = t.title;
         const hint = document.createElement('div'); hint.className = 'muted small'; hint.textContent = t.tip || '';
         meta.appendChild(title); meta.appendChild(hint);
-        const open = document.createElement('a'); open.className = 'btn'; open.target = '_blank'; open.rel = 'noopener noreferrer'; open.href = t.source; open.textContent = 'Источник';
 
-        // audio element (may be blocked by CORS; we keep fallback link)
-        const audio = document.createElement('audio');
-        audio.preload = 'none';
-        audio.controls = false;
-        audio.crossOrigin = 'anonymous';
-        // Try to extract direct .m3u8/mp4 is not trivial; keep source as-is. Many platforms block direct streaming.
+        // Try to embed Dzen page in an iframe container for audio playback
+        const container = document.createElement('div');
+        container.style.width = '100%';
+        container.style.display = 'none';
+        const iframe = document.createElement('iframe');
+        iframe.src = t.source;
+        iframe.allow = 'autoplay; encrypted-media';
+        iframe.referrerPolicy = 'no-referrer';
+        iframe.loading = 'lazy';
+        iframe.style.width = '100%';
+        iframe.style.height = '420px';
+        iframe.style.border = '1px solid var(--ring)';
+        iframe.style.borderRadius = '12px';
+        container.appendChild(iframe);
 
-        let playing = false;
+        let opened = false;
         btn.addEventListener('click', () => {
-          // Attempt to play via window.open if direct playback blocked
-          if (!playing) {
-            window.open(t.source, '_blank', 'noopener');
-          }
+          opened = !opened;
+          container.style.display = opened ? 'block' : 'none';
+          btn.textContent = opened ? '⏸' : '▶';
         });
 
-        row.appendChild(btn); row.appendChild(meta); row.appendChild(open);
+        row.appendChild(btn); row.appendChild(meta);
         list.appendChild(row);
+        list.appendChild(container);
       });
       tracksWrap.classList.remove('hidden');
     };
