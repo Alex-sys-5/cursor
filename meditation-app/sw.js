@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meditation-app-v11';
+const CACHE_NAME = 'meditation-app-v12';
 const ASSETS = [
   './',
   './index.html',

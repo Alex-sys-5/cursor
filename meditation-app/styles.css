@@ -1,4 +1,4 @@
-:root{--bg:#0b0f14;--card:#111826;--text:#e6eef6;--muted:#93a4b7;--primary:#23c1a1;--primary-700:#1aa487;--ring:#1e2a3a;--danger:#ff5f6d;--shadow:0 6px 24px rgba(0,0,0,.3)}
+:root{--bg:#0b0f14;--card:#111826;--text:#e6eef6;--muted:#93a4b7;--primary:#23c1a1;--primary-700:#1aa487;--ring:#1e2a3a;--danger:#ff5f6d;--shadow:0 6px 24px rgba(0,0,0,.3);color-scheme:dark}
 :root.light{--bg:#f7fafc;--card:#ffffff;--text:#0b1220;--muted:#4a5568;--primary:#1fb9a0;--primary-700:#14927d;--ring:#e2e8f0;--danger:#e53935;--shadow:0 4px 16px rgba(0,0,0,.08)}
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -103,3 +103,6 @@ main{padding:8px 16px 64px;max-width:980px;margin:0 auto}
 .wb-item .wb-meta{display:flex;flex-direction:column}
 .wb-item .wb-title{font-weight:700}
 .wb-item .wb-sub{color:var(--muted);font-size:12px}
+
+select{background-color:var(--card);color:var(--text)}
+:root.light select{background-color:#ffffff;color:#0b1220}

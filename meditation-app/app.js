@@ -779,19 +779,31 @@ const UI = {
     stress.addEventListener('input', () => { stressVal.textContent = String(stress.value); });
     energy.addEventListener('input', () => { energyVal.textContent = String(energy.value); });
 
-    saveBtn.addEventListener('click', async () => {
+    saveBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const chosen = (dateInput.value || '').trim();
+      const validDate = /^\d{4}-\d{2}-\d{2}$/.test(chosen) ? chosen : iso;
+      // Additional leap year validation to avoid impossible dates like 2025-02-29
+      const parts = validDate.split('-').map(Number);
+      const test = new Date(parts[0], parts[1]-1, parts[2]);
+      const normalized = `${test.getFullYear()}-${String(test.getMonth()+1).padStart(2,'0')}-${String(test.getDate()).padStart(2,'0')}`;
+      const safeDate = normalized === validDate ? validDate : iso;
+
       const payload = {
-        dateIso: dateInput.value || iso,
+        dateIso: safeDate,
         stress: Number(stress.value)||0,
         energy: Number(energy.value)||0,
         mood: mood.value,
         notes: (notes.value||'').trim()
       };
       try {
-        await fetch('/api/wellbeing', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const res = await fetch('/api/wellbeing', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        if (!res.ok) throw new Error('save_failed');
         notes.value = '';
-        renderList();
-      } catch {}
+        await renderList();
+      } catch {
+        alert('Не удалось сохранить запись. Проверьте соединение.');
+      }
     });
 
     renderList();
