@@ -152,9 +152,31 @@ class MeditationTimer {
 
 // Breathing logic
 const Techniques = {
-  box: { name: 'Бокс', pattern: [4, 4, 4, 4], labels: ['Вдох', 'Задержка', 'Выдох', 'Задержка'] },
-  '478': { name: '4-7-8', pattern: [4, 7, 8], labels: ['Вдох', 'Задержка', 'Выдох'] },
-  coherence: { name: 'Коэрентное', pattern: [5, 5], labels: ['Вдох', 'Выдох'] }
+  relax_breath: {
+    name: 'Дыхание для расслабления',
+    pattern: [2, 1, 6],
+    labels: ['Вдох (нос)', 'Пауза', 'Выдох (рот)']
+  },
+  mindful: {
+    name: 'Осознанное дыхание',
+    pattern: [5, 5],
+    labels: ['Наблюдение вдоха', 'Наблюдение выдоха']
+  },
+  relax_triangle: {
+    name: 'Релаксирующий треугольник',
+    pattern: [4, 8],
+    labels: ['Вдох (нос)', 'Выдох (медленнее)']
+  },
+  activate_triangle: {
+    name: 'Активирующий треугольник',
+    pattern: [4, 2],
+    labels: ['Вдох (нос)', 'Выдох (энергично)']
+  },
+  calming_wave: {
+    name: 'Успокаивающая волна',
+    pattern: [5, 7],
+    labels: ['Вдох (волна вверх)', 'Выдох (волна вниз)']
+  }
 };
 
 class BreathingSession {
@@ -269,10 +291,10 @@ class BreathingSession {
     const secondsLeft = Math.max(0, Math.ceil(this._phaseRemaining));
     this._setCue(`${label} · ${secondsLeft}с`);
 
-    if (label.startsWith('Вдох')) {
+    if (label.toLowerCase().includes('вдох')) {
       this._applyScale(1.15);
-    } else if (label.startsWith('Выдох')) {
-      this._applyScale(0.92);
+    } else if (label.toLowerCase().includes('выдох')) {
+      this._applyScale(0.9);
     } else {
       this._applyScale(1.03);
     }
@@ -544,7 +566,7 @@ const UI = {
 
     // Breath
     this.breath = new BreathingSession();
-    $('#technique').value = storage.get('technique', 'box');
+    $('#technique').value = storage.get('technique', 'relax_breath');
     $('#technique').addEventListener('change', (e) => this.breath.setTechnique(e.target.value));
     $('#breathMinutes').value = storage.get('breathMinutes', 5);
     $('#breathMinutes').addEventListener('change', (e) => this.breath.setMinutes(e.target.value));
