@@ -8,5 +8,5 @@
   <rect width="192" height="192" rx="40" fill="url(#g)"/>
   <circle cx="96" cy="92" r="42" fill="rgba(255,255,255,0.18)"/>
   <path d="M96 42c23 0 42 19 42 42s-19 42-42 42-42-19-42-42 19-42 42-42zm0 18a24 24 0 100 48 24 24 0 000-48z" fill="rgba(255,255,255,0.28)"/>
-  <text x="96" y="154" text-anchor="middle" font-size="44" fill="white">🧘</text>
+  <text x="96" y="154" text-anchor="middle" font-size="44" fill="white">🌿</text>
 </svg>
