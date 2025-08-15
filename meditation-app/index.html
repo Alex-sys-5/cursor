@@ -25,6 +25,7 @@
     <nav class="tabs" role="tablist" aria-label="Разделы">
       <button class="tab active" data-target="timer" role="tab" aria-selected="true">Таймер</button>
       <button class="tab" data-target="breath" role="tab">Дыхание</button>
+      <button class="tab" data-target="meditations" role="tab">Медитации</button>
       <button class="tab" data-target="sounds" role="tab">Звуки</button>
       <button class="tab" data-target="stats" role="tab">Статистика</button>
       <button class="tab" data-target="settings" role="tab">Настройки</button>
@@ -94,6 +95,30 @@
             <button id="startBreath" class="btn primary">Старт</button>
             <button id="pauseBreath" class="btn" disabled>Пауза</button>
             <button id="resetBreath" class="btn" disabled>Сброс</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="meditations" class="view" aria-labelledby="Медитации">
+        <div class="card">
+          <h2>Медитации</h2>
+          <div class="meditations-grid">
+            <button class="meditation-tile" data-key="career">Карьера</button>
+            <button class="meditation-tile" data-key="money">Деньги</button>
+            <button class="meditation-tile" data-key="relax">Расслабление</button>
+            <button class="meditation-tile" data-key="love">Любовь</button>
+            <button class="meditation-tile" data-key="energy">Заряд энергии</button>
+            <button class="meditation-tile" data-key="sex">Секс</button>
+          </div>
+          <div class="divider"></div>
+          <div id="meditationDetail" class="meditation-detail hidden">
+            <h3 id="meditationTitle">Выберите медитацию</h3>
+            <p id="meditationDesc" class="muted"></p>
+            <div class="buttons">
+              <button id="medStart5" class="btn">Старт 5 мин</button>
+              <button id="medStart10" class="btn">Старт 10 мин</button>
+              <button id="medStart15" class="btn">Старт 15 мин</button>
+            </div>
           </div>
         </div>
       </section>

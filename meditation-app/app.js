@@ -619,11 +619,54 @@ const UI = {
 
     UI._updateTimerButtons();
     UI._updateBreathButtons();
+
+    // Meditations
+    UI._initMeditations();
   },
 
   switchTab(id) {
     $$('.tab').forEach(btn => btn.classList.toggle('active', btn.dataset.target === id));
     $$('.view').forEach(v => v.classList.toggle('active', v.id === id));
+  },
+
+  _initMeditations() {
+    const titles = {
+      career: { title: 'Карьера', desc: 'Фокус, продуктивность и уверенность в профессиональном росте.' },
+      money: { title: 'Деньги', desc: 'Отношение к достатку, изобилию и финансовой осознанности.' },
+      relax: { title: 'Расслабление', desc: 'Снятие напряжения, отпускание забот и восстановление.' },
+      love: { title: 'Любовь', desc: 'Открытость сердцу, доброта и принятие.' },
+      energy: { title: 'Заряд энергии', desc: 'Бодрость, ясность и мягкая мотивация на день.' },
+      sex: { title: 'Секс', desc: 'Чувственность, присутствие и доверие к себе.' }
+    };
+    const detail = document.getElementById('meditationDetail');
+    const titleEl = document.getElementById('meditationTitle');
+    const descEl = document.getElementById('meditationDesc');
+
+    $$('.meditation-tile').forEach(tile => {
+      tile.addEventListener('click', () => {
+        const key = tile.dataset.key;
+        const meta = titles[key];
+        if (!meta) return;
+        titleEl.textContent = meta.title;
+        descEl.textContent = meta.desc;
+        detail.classList.remove('hidden');
+        UI.switchTab('meditations');
+      });
+    });
+
+    const startFor = (min) => {
+      return () => {
+        $('#customMinutes').value = String(min);
+        UI.timer.setDurationMinutes(min);
+        UI.switchTab('timer');
+        UI.timer.start();
+        UI._updateTimerButtons(true);
+      };
+    };
+
+    document.getElementById('medStart5').addEventListener('click', startFor(5));
+    document.getElementById('medStart10').addEventListener('click', startFor(10));
+    document.getElementById('medStart15').addEventListener('click', startFor(15));
   },
 
   _updateTimerButtons(isRunning) {
