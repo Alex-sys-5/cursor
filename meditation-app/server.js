@@ -141,6 +141,8 @@ app.use(express.static(rootDir, {
     } else if (rel === 'sw.js') {
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Service-Worker-Allowed', '/');
+    } else if (/\.(js|css)(?:\?.*)?$/i.test(rel) || rel === 'app.js' || rel === 'styles.css') {
+      res.setHeader('Cache-Control', 'no-cache');
     } else {
       res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
     }
