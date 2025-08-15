@@ -8,7 +8,8 @@ const DB_PATH = path.join(__dirname, '..', 'data', 'db.json');
 
 const defaultDB = {
   stats: { totalSessions: 0, totalMinutes: 0, lastSessionDate: null, streakDays: 0 },
-  sessions: []
+  sessions: [],
+  wellbeing: []
 };
 
 async function ensureDB() {

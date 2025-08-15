@@ -28,6 +28,7 @@
       <button class="tab" data-target="meditations" role="tab">Медитации</button>
       <button class="tab" data-target="sounds" role="tab">Звуки</button>
       <button class="tab" data-target="stats" role="tab">Статистика</button>
+      <button class="tab" data-target="wellbeing" role="tab">Самочувствие</button>
       <button class="tab" data-target="settings" role="tab">Настройки</button>
     </nav>
 
@@ -196,6 +197,50 @@
               <div class="stat-label">Дней подряд</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section id="wellbeing" class="view" aria-labelledby="Самочувствие">
+        <div class="card">
+          <h2>Самочувствие</h2>
+          <div class="wb-form grid two">
+            <label>
+              <span>Дата</span>
+              <input id="wbDate" type="date" />
+            </label>
+            <label>
+              <span>Настроение</span>
+              <select id="wbMood">
+                <option value="very_bad">Очень плохое</option>
+                <option value="bad">Плохое</option>
+                <option value="neutral" selected>Нейтральное</option>
+                <option value="good">Хорошее</option>
+                <option value="great">Отличное</option>
+              </select>
+            </label>
+          </div>
+          <div class="wb-form grid two">
+            <label>
+              <span>Стресс: <b id="wbStressVal">5</b>/10</span>
+              <input id="wbStress" type="range" min="0" max="10" step="1" value="5" />
+            </label>
+            <label>
+              <span>Энергия: <b id="wbEnergyVal">5</b>/10</span>
+              <input id="wbEnergy" type="range" min="0" max="10" step="1" value="5" />
+            </label>
+          </div>
+          <label class="wb-notes">
+            <span>Заметки</span>
+            <textarea id="wbNotes" rows="3" placeholder="Как вы себя чувствуете? Что повлияло на состояние?"></textarea>
+          </label>
+          <div class="buttons">
+            <button id="wbSave" class="btn primary">Сохранить</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>История</h2>
+          <div id="wbList" class="wb-list"></div>
         </div>
       </section>
 

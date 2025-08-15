@@ -120,6 +120,48 @@ api.delete('/sessions/:id', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
+api.get('/wellbeing', async (req, res, next) => {
+  try {
+    await ensureDB();
+    const db = await readDB();
+    const items = Array.from(db.wellbeing || []);
+    items.sort((a,b)=> (a.createdAt||0) < (b.createdAt||0) ? 1 : -1);
+    const limit = Math.max(0, Math.min(500, Number(req.query.limit) || 100));
+    res.json(items.slice(0, limit));
+  } catch (e) { next(e); }
+});
+
+api.post('/wellbeing', async (req, res, next) => {
+  try {
+    const { dateIso, stress, energy, mood, notes } = req.body || {};
+    const d = typeof dateIso === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateIso) ? dateIso : isoDateLocal(new Date());
+    const s = Math.max(0, Math.min(10, Number(stress)||0));
+    const en = Math.max(0, Math.min(10, Number(energy)||0));
+    const m = typeof mood === 'string' ? mood : 'neutral';
+    const n = typeof notes === 'string' ? notes.slice(0, 2000) : '';
+    const entry = { id: newId(), dateIso: d, stress: s, energy: en, mood: m, notes: n, createdAt: Date.now() };
+    await ensureDB();
+    const db = await readDB();
+    db.wellbeing = db.wellbeing || [];
+    db.wellbeing.push(entry);
+    await queueWrite(db);
+    res.status(201).json(entry);
+  } catch (e) { next(e); }
+});
+
+api.delete('/wellbeing/:id', async (req, res, next) => {
+  try {
+    const id = req.params.id;
+    await ensureDB();
+    const db = await readDB();
+    const before = (db.wellbeing||[]).length;
+    db.wellbeing = (db.wellbeing||[]).filter(x=>x.id !== id);
+    if (db.wellbeing.length === before) return res.status(404).json({ error: 'not found' });
+    await queueWrite(db);
+    res.status(204).end();
+  } catch (e) { next(e); }
+});
+
 app.use('/api', api);
 app.get('/openapi.json', (req, res) => res.json(openapi));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapi, { explorer: true }));

@@ -13,7 +13,8 @@
   "tags": [
     { "name": "meta", "description": "Здоровье и версия" },
     { "name": "stats", "description": "Статистика медитаций" },
-    { "name": "sessions", "description": "Сессии медитаций" }
+    { "name": "sessions", "description": "Сессии медитаций" },
+    { "name": "wellbeing", "description": "Самочувствие: стресс и настроение" }
   ],
   "paths": {
     "/api/health": {
@@ -144,6 +145,44 @@
           "404": { "description": "Не найдено", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
         }
       }
+    },
+    "/api/wellbeing": {
+      "get": {
+        "tags": ["wellbeing"],
+        "summary": "Список записей самочувствия",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": { "type": "integer", "minimum": 0, "maximum": 500, "default": 100 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список записей",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/WellbeingEntry" } } } }
+          }
+        }
+      },
+      "post": {
+        "tags": ["wellbeing"],
+        "summary": "Создать запись самочувствия",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WellbeingCreate" } } }
+        },
+        "responses": {
+          "201": { "description": "Создано", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WellbeingEntry" } } } }
+        }
+      }
+    },
+    "/api/wellbeing/{id}": {
+      "delete": {
+        "tags": ["wellbeing"],
+        "summary": "Удалить запись",
+        "parameters": [ { "in": "path", "name": "id", "required": true, "schema": { "type": "string" } } ],
+        "responses": { "204": { "description": "Удалено" }, "404": { "description": "Не найдено" } }
+      }
     }
   },
   "components": {
@@ -173,6 +212,30 @@
         "type": "object",
         "properties": { "error": { "type": "string" } },
         "required": ["error"]
+      },
+      "WellbeingEntry": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "dateIso": { "type": "string", "format": "date" },
+          "stress": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "energy": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "mood": { "type": "string", "enum": ["very_bad","bad","neutral","good","great"] },
+          "notes": { "type": "string" },
+          "createdAt": { "type": "integer", "format": "int64" }
+        },
+        "required": ["id","dateIso","stress","energy","mood","createdAt"]
+      },
+      "WellbeingCreate": {
+        "type": "object",
+        "properties": {
+          "dateIso": { "type": "string", "format": "date" },
+          "stress": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "energy": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "mood": { "type": "string", "enum": ["very_bad","bad","neutral","good","great"], "default": "neutral" },
+          "notes": { "type": "string" }
+        },
+        "required": ["stress","energy","mood"]
       }
     }
   }

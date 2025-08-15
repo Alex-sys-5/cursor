@@ -644,6 +644,9 @@ const UI = {
 
     // Meditations
     UI._initMeditations();
+
+    // Wellbeing
+    UI._initWellbeing();
   },
 
   switchTab(id) {
@@ -727,6 +730,75 @@ const UI = {
         UI.switchTab('meditations');
       });
     });
+  },
+
+  _initWellbeing() {
+    const dateInput = document.getElementById('wbDate');
+    const stress = document.getElementById('wbStress');
+    const stressVal = document.getElementById('wbStressVal');
+    const energy = document.getElementById('wbEnergy');
+    const energyVal = document.getElementById('wbEnergyVal');
+    const mood = document.getElementById('wbMood');
+    const notes = document.getElementById('wbNotes');
+    const saveBtn = document.getElementById('wbSave');
+    const list = document.getElementById('wbList');
+
+    const today = new Date();
+    const iso = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+    if (dateInput) dateInput.value = iso;
+
+    const renderList = async () => {
+      try {
+        const res = await fetch('/api/wellbeing?limit=100');
+        const items = res.ok ? await res.json() : [];
+        list.innerHTML = '';
+        if (!items.length) {
+          list.innerHTML = '<div class="muted">Нет записей</div>';
+          return;
+        }
+        items.forEach(item => {
+          const row = document.createElement('div'); row.className = 'wb-item';
+          const meta = document.createElement('div'); meta.className = 'wb-meta';
+          const title = document.createElement('div'); title.className = 'wb-title';
+          title.textContent = `${item.dateIso} · Настроение: ${UI._moodLabel(item.mood)} · Стресс: ${item.stress}/10 · Энергия: ${item.energy}/10`;
+          const sub = document.createElement('div'); sub.className = 'wb-sub'; sub.textContent = item.notes || '';
+          meta.appendChild(title); meta.appendChild(sub);
+          const del = document.createElement('button'); del.className = 'btn danger'; del.textContent = 'Удалить';
+          del.addEventListener('click', async () => {
+            await fetch(`/api/wellbeing/${item.id}`, { method: 'DELETE' }).catch(()=>{});
+            renderList();
+          });
+          row.appendChild(meta); row.appendChild(del);
+          list.appendChild(row);
+        });
+      } catch {
+        list.innerHTML = '<div class="muted">Не удалось загрузить записи</div>';
+      }
+    };
+
+    stress.addEventListener('input', () => { stressVal.textContent = String(stress.value); });
+    energy.addEventListener('input', () => { energyVal.textContent = String(energy.value); });
+
+    saveBtn.addEventListener('click', async () => {
+      const payload = {
+        dateIso: dateInput.value || iso,
+        stress: Number(stress.value)||0,
+        energy: Number(energy.value)||0,
+        mood: mood.value,
+        notes: (notes.value||'').trim()
+      };
+      try {
+        await fetch('/api/wellbeing', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        notes.value = '';
+        renderList();
+      } catch {}
+    });
+
+    renderList();
+  },
+
+  _moodLabel(code) {
+    return ({ very_bad: 'Очень плохое', bad: 'Плохое', neutral: 'Нейтральное', good: 'Хорошее', great: 'Отличное' }[code]) || code;
   },
 
   _updateTimerButtons(isRunning) {
