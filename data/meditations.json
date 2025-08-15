@@ -1,0 +1,31 @@
+{
+  "meditations": [
+    {
+      "id": "intro-1",
+      "title": "Утреннее спокойствие",
+      "description": "Короткая медитация для мягкого начала дня и фокусировки внимания.",
+      "durationSec": 480,
+      "category": "Утро",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "imageUrl": "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1600&auto=format&fit=crop"
+    },
+    {
+      "id": "focus-1",
+      "title": "Фокус и продуктивность",
+      "description": "Медитация на дыхание для ясности ума и сохранения концентрации.",
+      "durationSec": 600,
+      "category": "День",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+      "imageUrl": "https://images.unsplash.com/photo-1523419409543-8c0e315a9872?q=80&w=1600&auto=format&fit=crop"
+    },
+    {
+      "id": "sleep-1",
+      "title": "Мягкое засыпание",
+      "description": "Расслабляющая медитация для снятия напряжения и подготовки ко сну.",
+      "durationSec": 900,
+      "category": "Вечер",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+      "imageUrl": "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?q=80&w=1600&auto=format&fit=crop"
+    }
+  ]
+}
