@@ -1,0 +1,32 @@
+{
+  "name": "workspace",
+  "version": "1.0.0",
+  "description": "cursor",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alex-sys-5/cursor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alex-sys-5/cursor/issues"
+  },
+  "homepage": "https://github.com/Alex-sys-5/cursor#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
