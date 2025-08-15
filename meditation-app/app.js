@@ -469,6 +469,9 @@ class SoundsEngineClass {
 }
 
 const SoundsEngine = new SoundsEngineClass();
+// Backward-compat: ensure instance has tick/beep methods for old call sites
+if (typeof SoundsEngine.tick !== 'function') SoundsEngine.tick = SoundsEngineClass.tick;
+if (typeof SoundsEngine.beep !== 'function') SoundsEngine.beep = SoundsEngineClass.beep;
 
 // Statistics via REST with offline fallback
 const Stats = {
