@@ -233,6 +233,105 @@
       "category": "Глубокий сон",
       "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-26.mp3",
       "imageUrl": "/assets/sleep-12.svg"
+    },
+    {
+      "id": "focus-02",
+      "title": "Фокус: дыхание 4–7–8",
+      "description": "Ритм 4–7–8 помогает быстро успокоить ум и сосредоточиться на задаче.",
+      "durationSec": 300,
+      "category": "Фокус",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-27.mp3",
+      "imageUrl": "/assets/focus-02.svg"
+    },
+    {
+      "id": "focus-03",
+      "title": "Фокус: помодоро-медитация 5 минут",
+      "description": "Короткая сессия, чтобы вернуться в состояние потока перед спринтом.",
+      "durationSec": 300,
+      "category": "Фокус",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-28.mp3",
+      "imageUrl": "/assets/focus-03.svg"
+    },
+    {
+      "id": "focus-04",
+      "title": "Фокус: однозадачность",
+      "description": "Практика осознанного внимания к одному объекту снижает отвлечения.",
+      "durationSec": 420,
+      "category": "Фокус",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-29.mp3",
+      "imageUrl": "/assets/focus-04.svg"
+    },
+    {
+      "id": "focus-05",
+      "title": "Фокус: микро‑перерыв дыханием",
+      "description": "1–2 минуты осознанного дыхания, чтобы сбросить стресс и продолжить в фокусе.",
+      "durationSec": 180,
+      "category": "Фокус",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-30.mp3",
+      "imageUrl": "/assets/focus-05.svg"
+    },
+    {
+      "id": "focus-06",
+      "title": "Фокус: визуализация результата",
+      "description": "Короткая визуализация шага и результата выравнивает намерение и внимание.",
+      "durationSec": 360,
+      "category": "Фокус",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-31.mp3",
+      "imageUrl": "/assets/focus-06.svg"
+    },
+    {
+      "id": "focus-07",
+      "title": "Фокус: отмечаем отвлечения",
+      "description": "Замечаем отвлечение, называем его и возвращаем внимание к объекту.",
+      "durationSec": 420,
+      "category": "Фокус",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-32.mp3",
+      "imageUrl": "/assets/focus-07.svg"
+    },
+    {
+      "id": "focus-08",
+      "title": "Фокус: дыхание через нос",
+      "description": "Носовое дыхание улучшает когнитивный тонус и концентрацию.",
+      "durationSec": 300,
+      "category": "Фокус",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-33.mp3",
+      "imageUrl": "/assets/focus-08.svg"
+    },
+    {
+      "id": "focus-09",
+      "title": "Фокус: мягкое напряжение мышц",
+      "description": "Коротко напрягаем и отпускаем кисти/плечи — быстро снимает суету тела.",
+      "durationSec": 240,
+      "category": "Фокус",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-34.mp3",
+      "imageUrl": "/assets/focus-09.svg"
+    },
+    {
+      "id": "focus-10",
+      "title": "Фокус: дыхание 6 вдохов в минуту",
+      "description": "Ровное дыхание ~6/min повышает вариабельность ритма и ясность внимания.",
+      "durationSec": 480,
+      "category": "Фокус",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-35.mp3",
+      "imageUrl": "/assets/focus-10.svg"
+    },
+    {
+      "id": "focus-11",
+      "title": "Фокус: звуковой якорь",
+      "description": "Концентрация на одном тихом звуке тренирует удержание внимания.",
+      "durationSec": 420,
+      "category": "Фокус",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-36.mp3",
+      "imageUrl": "/assets/focus-11.svg"
+    },
+    {
+      "id": "focus-12",
+      "title": "Фокус: осознанные 3 минуты",
+      "description": "Три минуты чистого присутствия, чтобы вернуться в поток.",
+      "durationSec": 180,
+      "category": "Фокус",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-37.mp3",
+      "imageUrl": "/assets/focus-12.svg"
     }
   ]
 }

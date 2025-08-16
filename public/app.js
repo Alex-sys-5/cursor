@@ -194,6 +194,12 @@ function showSleepMeditations() {
   scrollToMeditations();
 }
 
+function showFocusMeditations() {
+  const filtered = allMeditations.filter(m => (m.category || '').toLowerCase() === 'фокус');
+  renderMeditations(filtered.length ? filtered : allMeditations);
+  scrollToMeditations();
+}
+
 function initWebGLBackground() {
   if (!window.THREE) return;
 
@@ -323,6 +329,11 @@ async function main() {
   if (sleepCard) {
     sleepCard.addEventListener('click', showSleepMeditations);
     sleepCard.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showSleepMeditations(); } });
+  }
+  const focusCard = $('#benefit-focus');
+  if (focusCard) {
+    focusCard.addEventListener('click', showFocusMeditations);
+    focusCard.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showFocusMeditations(); } });
   }
 }
 
