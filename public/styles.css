@@ -1,5 +1,5 @@
 :root {
-  --bg: #0b0e13;
+  --bg: radial-gradient(120% 120% at 12% 10%, #101624 0%, #0b0e13 70%);
   --text: #e8eef5;
   --muted: #a9b4c2;
   --brand-1: #8a5cff;
