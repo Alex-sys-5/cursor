@@ -1,4 +1,5 @@
-/* globals gsap, ScrollTrigger, THREE, Lenis */
+/* globals gsap, ScrollTrigger, Lenis */
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
