@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8a5cff"/>
+      <stop offset="100%" stop-color="#22e1ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="#0b0e13"/>
+  <g opacity="0.5">
+    <circle cx="250" cy="200" r="220" fill="url(#g)"/>
+    <circle cx="900" cy="520" r="260" fill="url(#g)"/>
+  </g>
+  <text x="50" y="620" fill="#e8eef5" font-family="Inter, Arial, sans-serif" font-size="36">Утреннее спокойствие</text>
+</svg>
