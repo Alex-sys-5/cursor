@@ -17,6 +17,8 @@ async function fetchMeditations() {
   return res.json();
 }
 
+let allMeditations = [];
+
 function renderMeditations(list) {
   const el = $('#meditation-list');
   el.innerHTML = '';
@@ -25,7 +27,7 @@ function renderMeditations(list) {
     item.className = 'meditation-item reveal parallax';
     item.dataset.id = m.id;
     item.innerHTML = `
-      <img class="meditation-cover" src="${m.imageUrl || ''}" alt="${m.title}">
+      <img class="meditation-cover" src="${m.imageUrl || ''}" alt="${m.title}" loading="lazy" referrerpolicy="no-referrer">
       <div class="meditation-body">
         <div class="meditation-title">${m.title}</div>
         <div class="meditation-meta">${m.category} • ${Math.round(m.durationSec / 60)} мин</div>
@@ -147,12 +149,31 @@ function initGSAP() {
 function initLenis() {
   if (!window.Lenis) return;
   const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+  window.__lenis = lenis;
   function raf(time) {
     lenis.raf(time);
     requestAnimationFrame(raf);
   }
   requestAnimationFrame(raf);
   lenis.on('scroll', () => { if (window.ScrollTrigger) ScrollTrigger.update(); });
+}
+
+function scrollToMeditations() {
+  const target = '#meditations';
+  if (window.__lenis && typeof window.__lenis.scrollTo === 'function') {
+    window.__lenis.scrollTo(target);
+  } else {
+    const el = document.querySelector(target);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+function showStressMeditations() {
+  const filtered = allMeditations.filter(m => (m.category || '').toLowerCase() === 'снятие стресса');
+  if (filtered.length > 0) {
+    renderMeditations(filtered);
+  }
+  scrollToMeditations();
 }
 
 function initWebGLBackground() {
@@ -257,6 +278,7 @@ async function main() {
 
   try {
     const list = await fetchMeditations();
+    allMeditations = list;
     renderMeditations(list);
   } catch (e) {
     console.error(e);
@@ -266,6 +288,12 @@ async function main() {
   initGSAP();
   initLenis();
   initWebGLBackground();
+
+  const stressCard = $('#benefit-stress');
+  if (stressCard) {
+    stressCard.addEventListener('click', showStressMeditations);
+    stressCard.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showStressMeditations(); } });
+  }
 }
 
 window.addEventListener('DOMContentLoaded', main);
