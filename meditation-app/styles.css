@@ -1,0 +1,108 @@
+:root{--bg:#0b0f14;--card:#111826;--text:#e6eef6;--muted:#93a4b7;--primary:#23c1a1;--primary-700:#1aa487;--ring:#1e2a3a;--danger:#ff5f6d;--shadow:0 6px 24px rgba(0,0,0,.3);color-scheme:dark}
+:root.light{--bg:#f7fafc;--card:#ffffff;--text:#0b1220;--muted:#4a5568;--primary:#1fb9a0;--primary-700:#14927d;--ring:#e2e8f0;--danger:#e53935;--shadow:0 4px 16px rgba(0,0,0,.08)}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Helvetica Neue',Arial,'Noto Sans',sans-serif;background:var(--bg);color:var(--text);}
+
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;position:sticky;top:0;background:linear-gradient(180deg,var(--bg),transparent 85%);backdrop-filter:saturate(1.2) blur(4px);z-index:10}
+.brand{display:flex;align-items:center;gap:12px;cursor:pointer}
+.logo{font-size:28px}
+.titles h1{margin:0;font-size:20px}
+.subtitle{margin:0;color:var(--muted);font-size:12px}
+.icon-button{background:transparent;border:1px solid var(--ring);color:var(--text);border-radius:10px;padding:8px 10px;cursor:pointer}
+.icon-button:hover{border-color:var(--primary)}
+
+.tabs{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;padding:0 16px 8px}
+.tab{border:none;background:transparent;color:var(--muted);padding:12px;border-bottom:2px solid transparent;cursor:pointer}
+.tab.active{color:var(--text);border-color:var(--primary)}
+
+main{padding:8px 16px 64px;max-width:980px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--ring);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin:12px 0}
+.card h2{margin:4px 0 12px 0;font-size:18px}
+
+.grid.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:720px){.grid.two{grid-template-columns:1fr}}
+.inline-input{display:flex;align-items:center;gap:10px;margin:10px 0}
+.inline-input input[type="number"]{width:90px}
+
+.buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btn{background:#202b3c;border:1px solid var(--ring);color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer}
+.btn:hover{border-color:var(--primary)}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:#071218}
+.btn.primary:hover{background:var(--primary-700);border-color:var(--primary-700)}
+.btn.danger{background:transparent;border-color:rgba(255,95,109,.4);color:#ff8a94}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+
+.muted{color:var(--muted)}
+.divider{height:1px;background:var(--ring);margin:12px 0}
+
+.view{display:none}
+.view.active{display:block}
+
+/* Timer */
+.timer-controls{display:flex;flex-direction:column;gap:8px}
+.presets{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:8px 12px;border-radius:999px;border:1px solid var(--ring);background:transparent;color:var(--text);cursor:pointer}
+.chip:hover{border-color:var(--primary)}
+
+.timer-visual{display:grid;place-items:center;position:relative;margin:18px 0}
+.progress-ring{width:220px;height:220px;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--ring);stroke-width:12}
+.ring{fill:none;stroke:var(--primary);stroke-width:12;stroke-linecap:round;stroke-dasharray:339.292;stroke-dashoffset:339.292;transition:stroke-dashoffset .3s ease}
+.time-readout{position:absolute;text-align:center}
+.time{font-size:42px;font-weight:700;letter-spacing:1px}
+.status{color:var(--muted);margin-top:4px}
+
+/* Breath */
+.breath-visual{display:grid;place-items:center;gap:12px;margin:14px 0}
+.breath-circle{width:160px;height:160px;border-radius:50%;background:radial-gradient(120px 120px at 50% 50%, rgba(35,193,161,.5), rgba(35,193,161,.15) 60%, transparent 61%), linear-gradient(180deg, rgba(35,193,161,.08), rgba(35,193,161,.02));border:1px solid var(--ring);box-shadow:0 10px 28px rgba(35,193,161,.2) inset, var(--shadow);transform:scale(var(--breath-scale,1));transition:transform .8s ease-in-out}
+.breath-cue{font-size:20px;color:var(--muted)}
+
+/* Sounds */
+.sound-list{display:flex;flex-direction:column;gap:10px}
+.sound-row{display:flex;flex-direction:column;gap:8px;padding:10px;border:1px solid var(--ring);border-radius:12px}
+.sound-meta{display:flex;align-items:center;justify-content:space-between}
+.sound-name{font-weight:600}
+.switch{position:relative;display:inline-block;width:46px;height:26px}
+.switch input{opacity:0;width:0;height:0}
+.switch span{position:absolute;cursor:pointer;inset:0;background:#2a384d;border-radius:999px;transition:all .2s}
+.switch span:before{position:absolute;content:"";height:20px;width:20px;left:3px;top:3px;background:white;border-radius:50%;transition:all .2s}
+.switch input:checked+span{background:var(--primary)}
+.switch input:checked+span:before{transform:translateX(20px)}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stat{background:rgba(32,43,60,.4);border:1px solid var(--ring);border-radius:12px;padding:12px;text-align:center}
+.stat-value{font-size:28px;font-weight:700}
+.stat-label{color:var(--muted)}
+
+.app-footer{position:sticky;bottom:0;padding:10px 16px;background:linear-gradient(0deg,var(--bg),transparent 85%);backdrop-filter:saturate(1.2) blur(4px);display:flex;justify-content:center;color:var(--muted)}
+
+/* Meditations */
+.meditations-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:720px){.meditations-grid{grid-template-columns:repeat(2,1fr)}}
+.meditation-tile{padding:14px;border-radius:12px;border:1px solid var(--ring);background:linear-gradient(180deg, rgba(35,193,161,.08), rgba(35,193,161,.02));color:var(--text);cursor:pointer;text-align:center}
+.meditation-tile:hover{border-color:var(--primary)}
+.meditation-detail.hidden{display:none}
+.meditation-detail h3{margin:6px 0}
+
+.tracks-list{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.track-row{display:flex;align-items:center;gap:10px;border:1px solid var(--ring);border-radius:12px;padding:10px}
+.track-meta{flex:1;display:flex;flex-direction:column}
+.track-title{font-weight:600}
+.small{font-size:12px}
+.play-btn{min-width:68px}
+
+/* Wellbeing */
+.wb-form label{display:flex;flex-direction:column;gap:6px}
+.wb-form input[type="date"], .wb-form select{height:38px;border:1px solid var(--ring);border-radius:10px;background:transparent;color:var(--text);padding:6px 10px}
+.wb-form input[type="range"]{width:100%}
+.wb-notes textarea{width:100%;border:1px solid var(--ring);border-radius:10px;background:transparent;color:var(--text);padding:8px}
+.wb-list{display:flex;flex-direction:column;gap:10px}
+.wb-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border:1px solid var(--ring);border-radius:12px;padding:10px}
+.wb-item .wb-meta{display:flex;flex-direction:column}
+.wb-item .wb-title{font-weight:700}
+.wb-item .wb-sub{color:var(--muted);font-size:12px}
+
+select{background-color:var(--card);color:var(--text)}
+:root.light select{background-color:#ffffff;color:#0b1220}

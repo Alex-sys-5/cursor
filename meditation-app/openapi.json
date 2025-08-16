@@ -1,0 +1,242 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Meditation App API",
+    "version": "1.0.0",
+    "description": "REST API для приложения медитации: здоровье, версия, статистика и сессии."
+  },
+  "servers": [
+    { "url": "/", "description": "Relative" },
+    { "url": "http://127.0.0.1:3000", "description": "Local IPv4" },
+    { "url": "http://localhost:3000", "description": "Localhost" }
+  ],
+  "tags": [
+    { "name": "meta", "description": "Здоровье и версия" },
+    { "name": "stats", "description": "Статистика медитаций" },
+    { "name": "sessions", "description": "Сессии медитаций" },
+    { "name": "wellbeing", "description": "Самочувствие: стресс и настроение" }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": ["meta"],
+        "summary": "Проверка здоровья",
+        "responses": {
+          "200": {
+            "description": "Сервис доступен",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "status": { "type": "string", "example": "ok" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/version": {
+      "get": {
+        "tags": ["meta"],
+        "summary": "Версия приложения",
+        "responses": {
+          "200": {
+            "description": "Текущая версия",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "version": { "type": "string", "example": "1.0.0" } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats": {
+      "get": {
+        "tags": ["stats"],
+        "summary": "Текущая статистика",
+        "responses": {
+          "200": {
+            "description": "Агрегированная статистика",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Stats" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/stats/reset": {
+      "post": {
+        "tags": ["stats"],
+        "summary": "Сбросить статистику (очистить все сессии)",
+        "responses": {
+          "200": {
+            "description": "Новая пустая статистика",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Stats" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/sessions": {
+      "get": {
+        "tags": ["sessions"],
+        "summary": "Список сессий",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": { "type": "integer", "minimum": 0, "maximum": 500, "default": 100 },
+            "description": "Максимум элементов в ответе"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Сессии (сортировка по дате завершения, убыв.)",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Session" } }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["sessions"],
+        "summary": "Создать сессию",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["minutes"],
+                "properties": {
+                  "minutes": { "type": "integer", "minimum": 1, "example": 10 },
+                  "kind": { "type": "string", "enum": ["timer", "breath"], "default": "timer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Созданная сессия",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Session" } } }
+          },
+          "400": { "description": "Некорректный запрос", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/sessions/{id}": {
+      "delete": {
+        "tags": ["sessions"],
+        "summary": "Удалить сессию по id",
+        "parameters": [
+          { "in": "path", "name": "id", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "204": { "description": "Удалено" },
+          "404": { "description": "Не найдено", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
+    "/api/wellbeing": {
+      "get": {
+        "tags": ["wellbeing"],
+        "summary": "Список записей самочувствия",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": { "type": "integer", "minimum": 0, "maximum": 500, "default": 100 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список записей",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/WellbeingEntry" } } } }
+          }
+        }
+      },
+      "post": {
+        "tags": ["wellbeing"],
+        "summary": "Создать запись самочувствия",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WellbeingCreate" } } }
+        },
+        "responses": {
+          "201": { "description": "Создано", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/WellbeingEntry" } } } }
+        }
+      }
+    },
+    "/api/wellbeing/{id}": {
+      "delete": {
+        "tags": ["wellbeing"],
+        "summary": "Удалить запись",
+        "parameters": [ { "in": "path", "name": "id", "required": true, "schema": { "type": "string" } } ],
+        "responses": { "204": { "description": "Удалено" }, "404": { "description": "Не найдено" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Session": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "readOnly": true },
+          "minutes": { "type": "integer", "minimum": 0 },
+          "kind": { "type": "string", "enum": ["timer", "breath"] },
+          "endedAt": { "type": "integer", "format": "int64", "description": "Epoch ms", "readOnly": true },
+          "date": { "type": "string", "format": "date", "readOnly": true }
+        },
+        "required": ["id", "minutes", "kind", "endedAt", "date"]
+      },
+      "Stats": {
+        "type": "object",
+        "properties": {
+          "totalSessions": { "type": "integer", "minimum": 0 },
+          "totalMinutes": { "type": "integer", "minimum": 0 },
+          "lastSessionDate": { "type": "string", "format": "date", "nullable": true },
+          "streakDays": { "type": "integer", "minimum": 0 }
+        },
+        "required": ["totalSessions", "totalMinutes", "streakDays"]
+      },
+      "Error": {
+        "type": "object",
+        "properties": { "error": { "type": "string" } },
+        "required": ["error"]
+      },
+      "WellbeingEntry": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "dateIso": { "type": "string", "format": "date" },
+          "stress": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "energy": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "mood": { "type": "string", "enum": ["very_bad","bad","neutral","good","great"] },
+          "notes": { "type": "string" },
+          "createdAt": { "type": "integer", "format": "int64" }
+        },
+        "required": ["id","dateIso","stress","energy","mood","createdAt"]
+      },
+      "WellbeingCreate": {
+        "type": "object",
+        "properties": {
+          "dateIso": { "type": "string", "format": "date" },
+          "stress": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "energy": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "mood": { "type": "string", "enum": ["very_bad","bad","neutral","good","great"], "default": "neutral" },
+          "notes": { "type": "string" }
+        },
+        "required": ["stress","energy","mood"]
+      }
+    }
+  }
+}
