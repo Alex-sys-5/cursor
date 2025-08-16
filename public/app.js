@@ -23,40 +23,11 @@ function activateRevealsInList() {
   const listRoot = $('#meditation-list');
   if (!listRoot) return;
   const revealEls = $$('.reveal', listRoot);
-  const parallaxEls = $$('.parallax', listRoot);
-
-  // If GSAP available, wire animations; else just reveal immediately
-  if (window.gsap && window.ScrollTrigger) {
-    revealEls.forEach((el) => {
-      gsap.to(el, {
-        opacity: 1,
-        y: 0,
-        ease: 'power3.out',
-        duration: 0.6,
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 90%'
-        }
-      });
-    });
-    parallaxEls.forEach((el) => {
-      gsap.to(el, {
-        yPercent: -8,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: el,
-          scrub: true,
-          start: 'top bottom',
-          end: 'bottom top'
-        }
-      });
-    });
-  } else {
-    revealEls.forEach((el) => {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
-    });
-  }
+  // Instantly show list items to avoid jank from many triggers
+  revealEls.forEach((el) => {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  });
 }
 
 function renderMeditations(list) {
@@ -64,20 +35,17 @@ function renderMeditations(list) {
   el.innerHTML = '';
   for (const m of list) {
     const item = document.createElement('div');
-    item.className = 'meditation-item reveal parallax';
+    item.className = 'meditation-item reveal';
     item.dataset.id = m.id;
     item.innerHTML = `
-      <img class="meditation-cover" src="${m.imageUrl || ''}" alt="${m.title}" loading="lazy" referrerpolicy="no-referrer">
-      <div class="meditation-body">
-        <div class="meditation-title">${m.title}</div>
-        <div class="meditation-meta">${m.category} • ${Math.round(m.durationSec / 60)} мин</div>
-      </div>
-    `;
+      <img class=\"meditation-cover\" src=\"${m.imageUrl || ''}\" alt=\"${m.title}\" loading=\"lazy\" referrerpolicy=\"no-referrer\">\n      <div class=\"meditation-body\">\n        <div class=\"meditation-title\">${m.title}</div>\n        <div class=\"meditation-meta\">${m.category} • ${Math.round(m.durationSec / 60)} мин</div>\n      </div>\n    `;
     item.addEventListener('click', () => playMeditation(m));
     el.appendChild(item);
   }
-  // Make sure newly injected items are visible/animated
+  // Make sure newly injected items are visible
   activateRevealsInList();
+  // Recalculate triggers for the rest of page
+  if (window.ScrollTrigger) requestAnimationFrame(() => ScrollTrigger.refresh());
 }
 
 function setupPlayer() {
@@ -138,6 +106,7 @@ function splitText(selector) {
 function initGSAP() {
   if (!window.gsap) return;
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ limitCallbacks: true });
 
   splitText('.split');
 
@@ -149,6 +118,7 @@ function initGSAP() {
     stagger: 0.04
   });
 
+  // Keep reveal animations on general content
   gsap.utils.toArray('.reveal').forEach((el) => {
     gsap.to(el, {
       opacity: 1,
@@ -162,13 +132,14 @@ function initGSAP() {
     });
   });
 
+  // Parallax only for hero/about/benefit visuals (not for dynamic meditation items)
   gsap.utils.toArray('.parallax').forEach((el) => {
     gsap.to(el, {
-      yPercent: -8,
+      yPercent: -6,
       ease: 'none',
       scrollTrigger: {
         trigger: el,
-        scrub: true,
+        scrub: 0.3,
         start: 'top bottom',
         end: 'bottom top'
       }
@@ -183,14 +154,14 @@ function initGSAP() {
       x = ((e.clientX - r.left) / r.width - 0.5) * 10;
       y = ((e.clientY - r.top) / r.height - 0.5) * 10;
       gsap.to(btn, { x, y, duration: 0.3, ease: 'power3.out' });
-    });
+    }, { passive: true });
     btn.addEventListener('mouseleave', () => gsap.to(btn, { x: 0, y: 0, duration: 0.4, ease: 'power3.out' }));
   });
 }
 
 function initLenis() {
   if (!window.Lenis) return;
-  const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
+  const lenis = new Lenis({ duration: 0.95, smoothWheel: true, smoothTouch: false });
   window.__lenis = lenis;
   function raf(time) {
     lenis.raf(time);
@@ -220,8 +191,8 @@ function initWebGLBackground() {
   if (!window.THREE) return;
 
   const canvas = document.getElementById('bg-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'low-power' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.3));
 
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -261,11 +232,10 @@ function initWebGLBackground() {
       float dist = distance(uv, m);
       float ripple = 0.08 / (dist * 12.0 + 0.4);
 
-      vec3 c1 = vec3(0.54, 0.36, 1.0); // brand-1
-      vec3 c2 = vec3(0.13, 0.88, 1.0); // brand-2
+      vec3 c1 = vec3(0.54, 0.36, 1.0);
+      vec3 c2 = vec3(0.13, 0.88, 1.0);
       vec3 color = mix(c1, c2, n + ripple);
 
-      // subtle vignette
       float vign = smoothstep(1.2, 0.2, distance(uv, vec2(0.5)));
       color *= vign;
 
@@ -303,14 +273,22 @@ function initWebGLBackground() {
   window.addEventListener('pointermove', (e) => {
     uniforms.uMouse.value.x = e.clientX / window.innerWidth;
     uniforms.uMouse.value.y = 1.0 - e.clientY / window.innerHeight;
-  });
+  }, { passive: true });
 
+  let last = 0;
   function tick(t) {
-    uniforms.uTime.value = t * 0.001;
-    renderer.render(scene, camera);
+    if (t - last > 33) { // ~30 FPS cap to reduce jank
+      uniforms.uTime.value = t * 0.001;
+      renderer.render(scene, camera);
+      last = t;
+    }
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) renderer.setAnimationLoop(null);
+  });
 }
 
 async function main() {

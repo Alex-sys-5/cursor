@@ -82,7 +82,7 @@ body {
 @media (max-width: 900px) {
   .meditation-list { grid-template-columns: 1fr; }
 }
-.meditation-item { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: #0b0e13; cursor: pointer; transition: transform .25s ease, box-shadow .25s ease; }
+.meditation-item { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: #0b0e13; cursor: pointer; transition: transform .25s ease, box-shadow .25s ease; will-change: transform; }
 .meditation-item:hover { transform: translateY(-4px); box-shadow: 0 8px 30px #00000066; }
 .meditation-cover { aspect-ratio: 16/9; object-fit: cover; width: 100%; }
 .meditation-body { padding: 14px; }
