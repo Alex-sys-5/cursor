@@ -192,7 +192,7 @@ function initWebGLBackground() {
   if (!window.THREE) return;
 
   const canvas = document.getElementById('bg-canvas');
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'low-power' });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.3));
 
   const scene = new THREE.Scene();
@@ -240,7 +240,7 @@ function initWebGLBackground() {
       float vign = smoothstep(1.2, 0.2, distance(uv, vec2(0.5)));
       color *= vign;
 
-      gl_FragColor = vec4(color, 1.0);
+      gl_FragColor = vec4(color, 0.85);
     }
   `;
 
