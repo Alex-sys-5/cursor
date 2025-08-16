@@ -19,6 +19,46 @@ async function fetchMeditations() {
 
 let allMeditations = [];
 
+function activateRevealsInList() {
+  const listRoot = $('#meditation-list');
+  if (!listRoot) return;
+  const revealEls = $$('.reveal', listRoot);
+  const parallaxEls = $$('.parallax', listRoot);
+
+  // If GSAP available, wire animations; else just reveal immediately
+  if (window.gsap && window.ScrollTrigger) {
+    revealEls.forEach((el) => {
+      gsap.to(el, {
+        opacity: 1,
+        y: 0,
+        ease: 'power3.out',
+        duration: 0.6,
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 90%'
+        }
+      });
+    });
+    parallaxEls.forEach((el) => {
+      gsap.to(el, {
+        yPercent: -8,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: el,
+          scrub: true,
+          start: 'top bottom',
+          end: 'bottom top'
+        }
+      });
+    });
+  } else {
+    revealEls.forEach((el) => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+  }
+}
+
 function renderMeditations(list) {
   const el = $('#meditation-list');
   el.innerHTML = '';
@@ -36,6 +76,8 @@ function renderMeditations(list) {
     item.addEventListener('click', () => playMeditation(m));
     el.appendChild(item);
   }
+  // Make sure newly injected items are visible/animated
+  activateRevealsInList();
 }
 
 function setupPlayer() {
@@ -159,20 +201,18 @@ function initLenis() {
 }
 
 function scrollToMeditations() {
-  const target = '#meditations';
+  const el = document.querySelector('#meditations');
+  if (!el) return;
   if (window.__lenis && typeof window.__lenis.scrollTo === 'function') {
-    window.__lenis.scrollTo(target);
+    window.__lenis.scrollTo(el);
   } else {
-    const el = document.querySelector(target);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    el.scrollIntoView({ behavior: 'smooth' });
   }
 }
 
 function showStressMeditations() {
   const filtered = allMeditations.filter(m => (m.category || '').toLowerCase() === 'снятие стресса');
-  if (filtered.length > 0) {
-    renderMeditations(filtered);
-  }
+  renderMeditations(filtered.length ? filtered : allMeditations);
   scrollToMeditations();
 }
 
