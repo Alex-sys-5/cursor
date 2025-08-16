@@ -134,6 +134,105 @@
       "category": "Снятие стресса",
       "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
       "imageUrl": "/assets/stress-12.svg"
+    },
+    {
+      "id": "sleep-02",
+      "title": "Глубокий сон: расслабление всего тела",
+      "description": "Мягкая последовательность расслабления от стоп до макушки для плавного засыпания.",
+      "durationSec": 900,
+      "category": "Глубокий сон",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3",
+      "imageUrl": "/assets/sleep-02.svg"
+    },
+    {
+      "id": "sleep-03",
+      "title": "Глубокий сон: тёплое дыхание",
+      "description": "Спокойное дыхание с удлинённым выдохом снимает возбуждение и готовит ко сну.",
+      "durationSec": 720,
+      "category": "Глубокий сон",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-17.mp3",
+      "imageUrl": "/assets/sleep-03.svg"
+    },
+    {
+      "id": "sleep-04",
+      "title": "Глубокий сон: визуализация уютного места",
+      "description": "Воображаем безопасное и уютное пространство, где телу легко отпускать напряжение.",
+      "durationSec": 780,
+      "category": "Глубокий сон",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-18.mp3",
+      "imageUrl": "/assets/sleep-04.svg"
+    },
+    {
+      "id": "sleep-05",
+      "title": "Глубокий сон: шёпот волн",
+      "description": "Ритм прибоя синхронизируется с дыханием, убаюкивая и вводя в сон.",
+      "durationSec": 840,
+      "category": "Глубокий сон",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-19.mp3",
+      "imageUrl": "/assets/sleep-05.svg"
+    },
+    {
+      "id": "sleep-06",
+      "title": "Глубокий сон: расслабление лица",
+      "description": "Отпускаем челюсть, лоб и глаза, что снижает общий тонус и способствует засыпанию.",
+      "durationSec": 600,
+      "category": "Глубокий сон",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-20.mp3",
+      "imageUrl": "/assets/sleep-06.svg"
+    },
+    {
+      "id": "sleep-07",
+      "title": "Глубокий сон: счёт дыхания",
+      "description": "Мягкий счёт вдохов-выдохов убаюкивает ум и замедляет внутренний диалог.",
+      "durationSec": 660,
+      "category": "Глубокий сон",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-21.mp3",
+      "imageUrl": "/assets/sleep-07.svg"
+    },
+    {
+      "id": "sleep-08",
+      "title": "Глубокий сон: тёмное небо с звёздами",
+      "description": "Ночная визуализация с плавными звуками помогает сместить фокус и уснуть.",
+      "durationSec": 780,
+      "category": "Глубокий сон",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-22.mp3",
+      "imageUrl": "/assets/sleep-08.svg"
+    },
+    {
+      "id": "sleep-09",
+      "title": "Глубокий сон: теплая тяжесть",
+      "description": "Аутогенная формула «тепло и тяжесть» мягко приводит к сонливости.",
+      "durationSec": 720,
+      "category": "Глубокий сон",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-23.mp3",
+      "imageUrl": "/assets/sleep-09.svg"
+    },
+    {
+      "id": "sleep-10",
+      "title": "Глубокий сон: отпускание дня",
+      "description": "Подводим итог дня и отпускаем незавершённые мысли, переключаясь на отдых.",
+      "durationSec": 600,
+      "category": "Глубокий сон",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-24.mp3",
+      "imageUrl": "/assets/sleep-10.svg"
+    },
+    {
+      "id": "sleep-11",
+      "title": "Глубокий сон: ночной лес",
+      "description": "Звуки ночного леса и спокойный голос помогают раствориться в тишине.",
+      "durationSec": 840,
+      "category": "Глубокий сон",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-25.mp3",
+      "imageUrl": "/assets/sleep-11.svg"
+    },
+    {
+      "id": "sleep-12",
+      "title": "Глубокий сон: мягкое погружение",
+      "description": "Плавное замедление дыхания и простая визуализация для глубокого сна.",
+      "durationSec": 780,
+      "category": "Глубокий сон",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-26.mp3",
+      "imageUrl": "/assets/sleep-12.svg"
     }
   ]
 }

@@ -188,6 +188,12 @@ function showStressMeditations() {
   scrollToMeditations();
 }
 
+function showSleepMeditations() {
+  const filtered = allMeditations.filter(m => (m.category || '').toLowerCase() === 'глубокий сон');
+  renderMeditations(filtered.length ? filtered : allMeditations);
+  scrollToMeditations();
+}
+
 function initWebGLBackground() {
   if (!window.THREE) return;
 
@@ -312,6 +318,11 @@ async function main() {
   if (stressCard) {
     stressCard.addEventListener('click', showStressMeditations);
     stressCard.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showStressMeditations(); } });
+  }
+  const sleepCard = $('#benefit-sleep');
+  if (sleepCard) {
+    sleepCard.addEventListener('click', showSleepMeditations);
+    sleepCard.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showSleepMeditations(); } });
   }
 }
 
