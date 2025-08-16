@@ -6,6 +6,8 @@ const cors = require('cors');
 const { z } = require('zod');
 const { nanoid } = require('nanoid');
 const { readDatabase, writeDatabase } = require('./storage');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,6 +17,7 @@ app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const MeditationCreateSchema = z.object({
 	title: z.string().min(1),
@@ -116,4 +119,5 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
 	console.log(`Meditation app server listening on http://localhost:${PORT}`);
+	console.log(`Swagger UI available at http://localhost:${PORT}/api/docs`);
 });
