@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Meditate — Mindful</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+	<header class="header">
+		<div class="container header__inner">
+			<div class="logo">Mindful</div>
+			<nav class="nav">
+				<a href="#explore">Коллекции</a>
+				<a href="#how">Как это работает</a>
+				<a href="#download" class="btn btn--ghost">Войти</a>
+			</nav>
+		</div>
+	</header>
+
+	<section class="hero">
+		<div class="container hero__inner">
+			<div class="hero__content">
+				<h1>Найдите спокойствие с короткими медитациями</h1>
+				<p>Пять–пятнадцать минут, чтобы перезагрузиться, сфокусироваться и почувствовать себя лучше.</p>
+				<a href="#explore" class="btn btn--primary">Начать</a>
+			</div>
+			<div class="hero__art" aria-hidden="true"></div>
+		</div>
+	</section>
+
+	<main class="container" id="explore">
+		<h2 class="section-title">Популярные медитации</h2>
+		<div id="meditations" class="grid"></div>
+	</main>
+
+	<section class="cta">
+		<div class="container cta__inner">
+			<div>
+				<h3>Сделайте заботу о себе привычкой</h3>
+				<p>Уведомления, напоминания и приятные ритуалы помогут регулярности.</p>
+			</div>
+			<a href="#explore" class="btn btn--secondary">Выбрать сессию</a>
+		</div>
+	</section>
+
+	<footer class="footer">
+		<div class="container footer__inner">
+			<div>© <span id="year"></span> Mindful</div>
+			<div class="footer__links">
+				<a href="#">Поддержка</a>
+				<a href="#">Политика</a>
+			</div>
+		</div>
+	</footer>
+
+	<div id="player" class="player hidden" role="dialog" aria-modal="true" aria-labelledby="player-title">
+		<div class="player__card">
+			<div class="player__header">
+				<h3 id="player-title">Сессия</h3>
+				<button id="player-close" class="icon-btn" aria-label="Закрыть">✕</button>
+			</div>
+			<div class="player__body">
+				<div class="player__meta">
+					<div id="player-name" class="player__name"></div>
+					<div id="player-time" class="player__time">00:00 / 00:00</div>
+				</div>
+				<div class="progress">
+					<div id="progress-bar" class="progress__bar" style="width: 0%"></div>
+				</div>
+				<div class="player__controls">
+					<button id="btn-play" class="btn btn--primary">Пауза</button>
+					<button id="btn-complete" class="btn btn--ghost">Завершить</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="/app.js"></script>
+</body>
+</html>
